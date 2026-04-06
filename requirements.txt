@@ -1,0 +1,10 @@
+# drift — requirements.txt
+# Drift uses only the Python standard library.
+# No third-party packages are required.
+#
+# Standard library modules used (for reference):
+#   argparse, os, platform, random, subprocess, sys, time, datetime, pathlib
+#
+# All wireless operations are performed via OS tools:
+#   Linux : iw, iwgetid, wpa_cli, nmcli, sudo
+#   macOS : airport (Apple80211 framework), networksetup

@@ -1,0 +1,110 @@
+[
+  {
+    "id": "DRIFT-001",
+    "title": "Wireless Reconnection Successful",
+    "severity": "INFO",
+    "category": "Operational",
+    "description": "The wireless interface successfully disconnected from and reconnected to the target SSID within the expected time window. The SSID association was confirmed by polling the interface state.",
+    "remediation": "No action required. This is an expected operational event confirming normal wireless stack behaviour.",
+    "references": []
+  },
+  {
+    "id": "DRIFT-002",
+    "title": "Wireless Reconnection Failed or Timed Out",
+    "severity": "MEDIUM",
+    "category": "Availability",
+    "description": "The reconnect command was issued but the interface did not confirm association with the target SSID within the 20-second polling window. This may indicate a weak signal, aggressive rate-limiting of (re)association requests by the AP, or a WPA Enterprise authentication delay.",
+    "remediation": "Verify the device remains within AP range. Check whether the access point enforces re-association rate limits or client flood protection. Investigate whether WPA Enterprise RADIUS timeout is causing delays.",
+    "references": ["CWE-400"]
+  },
+  {
+    "id": "DRIFT-003",
+    "title": "SSID Mismatch After Reconnect",
+    "severity": "MEDIUM",
+    "category": "Wireless Security",
+    "description": "After issuing the reconnect command for the target SSID, the interface associated with a different SSID. This may indicate the presence of a rogue access point with a stronger signal, or unintended roaming to an adjacent network.",
+    "remediation": "Investigate whether a rogue AP broadcasting the same or similar SSID is present. Confirm that the wireless client prefers the intended BSSID. Consider enabling BSSID-pinning or 802.11w Management Frame Protection.",
+    "references": ["CWE-924", "OWASP-MSTG-NETWORK-6"]
+  },
+  {
+    "id": "DRIFT-004",
+    "title": "Wireless Interface Not Found",
+    "severity": "HIGH",
+    "category": "Configuration",
+    "description": "The specified or auto-detected wireless interface could not be found on the system. The tool is unable to perform any disconnect/reconnect operations.",
+    "remediation": "Verify the wireless adapter is physically connected and recognised by the OS. Run 'iw dev' (Linux) or 'airport -I' (macOS) to confirm available interfaces. Ensure the correct interface name is passed via --interface.",
+    "references": []
+  },
+  {
+    "id": "DRIFT-005",
+    "title": "Target Network Not Available",
+    "severity": "MEDIUM",
+    "category": "Availability",
+    "description": "The interface is not currently associated with the expected SSID at the start of a cycle. The target network may be temporarily unavailable, out of range, or the interface has roamed to a different network.",
+    "remediation": "Confirm the device is in range of the target AP. Check whether the AP has de-authenticated the client. Investigate AP availability or DHCP lease expiry causing loss of association.",
+    "references": []
+  },
+  {
+    "id": "DRIFT-006",
+    "title": "Cycle Completed Successfully",
+    "severity": "INFO",
+    "category": "Operational",
+    "description": "A full disconnect/reconnect cycle completed without error. Both the disconnect and reconnect commands succeeded, and the association with the target SSID was confirmed.",
+    "remediation": "No action required. Normal operational event.",
+    "references": []
+  },
+  {
+    "id": "DRIFT-007",
+    "title": "Maximum Cycle Count Reached",
+    "severity": "INFO",
+    "category": "Operational",
+    "description": "The configured maximum number of disconnect/reconnect cycles has been reached. The tool has exited normally.",
+    "remediation": "No action required. Re-run with a higher --count value or 0 for continuous operation if additional testing cycles are needed.",
+    "references": []
+  },
+  {
+    "id": "DRIFT-008",
+    "title": "Disconnect Command Returned Non-Zero Exit Code",
+    "severity": "MEDIUM",
+    "category": "Operational",
+    "description": "The OS wireless disconnect command (iw, wpa_cli, nmcli, or airport) returned a non-zero exit code. The interface may not have cleanly disassociated before the reconnect attempt.",
+    "remediation": "Verify that the process has sufficient privileges (sudo). Confirm the wireless stack is responsive. On Linux, check whether wpa_supplicant is running and accessible via the DBUS interface.",
+    "references": []
+  },
+  {
+    "id": "DRIFT-009",
+    "title": "Reconnect Command Returned Non-Zero Exit Code",
+    "severity": "MEDIUM",
+    "category": "Operational",
+    "description": "The OS wireless reconnect command returned a non-zero exit code. The network may not have been joined. This may indicate the SSID is not in the system's known network profiles, or that the wireless daemon rejected the connection attempt.",
+    "remediation": "Confirm the SSID has a saved connection profile (NetworkManager connection or wpa_supplicant configuration block). On macOS, ensure the network was previously joined and is in the keychain.",
+    "references": []
+  },
+  {
+    "id": "DRIFT-010",
+    "title": "Dry-Run Cycle Completed (Simulated)",
+    "severity": "INFO",
+    "category": "Operational",
+    "description": "A cycle completed in dry-run mode. No actual wireless commands were issued. This confirms the timing logic and argument parsing are functioning correctly.",
+    "remediation": "No action required. Remove --dry-run for live testing.",
+    "references": []
+  },
+  {
+    "id": "DRIFT-011",
+    "title": "Privilege Escalation Required for Wireless Commands",
+    "severity": "INFO",
+    "category": "Configuration",
+    "description": "Wireless management commands (iw, nmcli, airport) require elevated privileges. The tool invokes these via sudo. If passwordless sudo is not configured, interactive prompts may interrupt automated testing.",
+    "remediation": "Configure passwordless sudo for the specific wireless commands used by drift (e.g., /usr/bin/iw, /usr/sbin/nmcli, /usr/bin/wpa_cli) in /etc/sudoers.d/drift.",
+    "references": []
+  },
+  {
+    "id": "DRIFT-012",
+    "title": "Interface Auto-Detection Fallback Used",
+    "severity": "INFO",
+    "category": "Configuration",
+    "description": "The wireless interface was not explicitly specified. The tool fell back to parsing /proc/net/wireless or airport output to determine the active interface. The selected interface may not be the intended test adapter.",
+    "remediation": "Specify the intended interface explicitly using --interface to avoid ambiguity in multi-adapter environments.",
+    "references": []
+  }
+]
