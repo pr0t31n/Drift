@@ -34,7 +34,7 @@ import time             # stdlib — sleep between cycles
 from datetime import datetime   # stdlib — timestamp formatting
 from pathlib import Path        # stdlib — log file path handling
 
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 
 
 # ---------------------------------------------------------------------------

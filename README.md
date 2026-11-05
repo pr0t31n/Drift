@@ -6,6 +6,9 @@ Drift runs on a device already connected to the target network and repeatedly di
 
 ---
 
+
+> **[View full documentation on the Codex Wiki](https://wiki.pr0t31n.com/tools/drift)** — detailed features, CLI reference, findings catalogue, and integration guides.
+
 ## Features
 
 - **Jittered timing** — randomizes sleep between cycles to avoid predictable traffic patterns
